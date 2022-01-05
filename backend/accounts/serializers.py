@@ -7,7 +7,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = [
             "email",
             "password",
-            "display_name",
         ]
 
         extra_kwargs = {
@@ -17,11 +16,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def save(self):
         account = CustomUser(
             email = self.validated_data['email'],
-            display_name = self.validated_data['display_name'], 
         )
         password = self.validated_data['password']
         
-        # VALIDATOR FOR PASSWORD ANND MAIL!
+        # VALIDATOR FOR PASSWORD AND MAIL!
 
         account.set_password(password)
         account.save()

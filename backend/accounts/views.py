@@ -1,7 +1,7 @@
+from datetime import date
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 
 from .serializers import RegistrationSerializer
 
@@ -11,7 +11,7 @@ def registration_view(request):
     if request.method == 'POST':
         serializer = RegistrationSerializer(data=request.data)
         data = {}
-        
+
         if serializer.is_valid():
             account = serializer.save()
             data['response'] = "Successfully registered"
@@ -19,5 +19,12 @@ def registration_view(request):
             data['display_name'] = account.display_name
         else:
             data = serializer.errors
+
+    return Response(data)
+
+@api_view(['GET',])
+def test(request):
+    data = {}
+    data['test'] = 'test'
 
     return Response(data)
