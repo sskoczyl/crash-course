@@ -10,7 +10,7 @@ docker-compose build
 ```
 docker-compose up -d
 ```
-Wher running mentined commands, you should have `.env` file, which contains defined enviromental variables, in root directory. After succesfully running these comands development server should be accesible at http://localhost:8000.
+When running mentioned commands, you should have `.env` file, which contains defined enviromental variables, in root directory. Exampe contents of `.env` are shown in `example_env` file (it contains all enviromental variables used by project).  After succesfully running these comands development server should be accesible at http://localhost:8000.
 
 ## Dependencies
 
