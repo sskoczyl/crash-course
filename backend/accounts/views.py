@@ -21,10 +21,3 @@ def registration_view(request):
             data = serializer.errors
 
     return Response(data)
-
-@api_view(['GET',])
-def test(request):
-    data = {}
-    data['test'] = 'test'
-
-    return Response(data)
