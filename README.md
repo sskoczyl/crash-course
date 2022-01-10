@@ -10,7 +10,7 @@ docker-compose build
 ```
 docker-compose up -d
 ```
-When running mentioned commands, you should have `.env` file, which contains defined enviromental variables, in root directory. Exampe contents of `.env` are shown in `example_env` file (it contains all enviromental variables used by project).  After succesfully running these comands development server should be accesible at http://localhost:8000. If you want to stop running containers, in root folder, run:
+When running mentioned commands, you should have `.env` file, which contains defined enviromental variables, in root directory. Exampe contents of `.env` are shown in `example_env` file (it contains all enviromental variables used by project).  After succesfully running these comands development server should be accesible at http://localhost:8000. If you want to stop running containers and remove them and any networks that were created, in root folder, run:
 
 ```
 docker-compose down
