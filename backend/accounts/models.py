@@ -7,7 +7,7 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    display_name = models.CharField(max_length=30, blank=True, null=True, default=None)
+    display_name = models.CharField(max_length=30, blank=True, null=False, default="")
     email = models.EmailField(_('email address'), unique=True, blank=False, null=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
@@ -19,7 +19,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        if self.display_name is not None:
+        if self.display_name != "":
             return self.display_name
         else:
             return str(self.email)
