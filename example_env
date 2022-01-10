@@ -1,0 +1,11 @@
+SECRET_KEY='supersecretkey:-0'
+DEBUG=1
+DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1] 0.0.0.0
+
+SQL_ENGINE=django.db.backends.postgresql
+SQL_HOST=db
+SQL_PORT=5432
+
+POSTGRES_DB=hello_django_dev
+POSTGRES_USER=hello_django
+POSTGRES_PASSWORD=hello_django
