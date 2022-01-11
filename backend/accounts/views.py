@@ -5,10 +5,12 @@ from rest_framework.views import APIView
 
 from .serializers import RegistrationSerializer
 
+
 class UserRegister(APIView):
     """
     Creates the user via registration.
     """
+
     def post(self, request):
         if not request.user.is_authenticated:
             serializer = RegistrationSerializer(data=request.data)
@@ -16,9 +18,9 @@ class UserRegister(APIView):
 
             if serializer.is_valid():
                 account = serializer.save()
-                data['response'] = "Successfully registered"
-                data['email'] = account.email
-                data['display_name'] = account.display_name
+                data["response"] = "Successfully registered"
+                data["email"] = account.email
+                data["display_name"] = account.display_name
 
                 return Response(data, status=status.HTTP_201_CREATED)
 
@@ -27,4 +29,4 @@ class UserRegister(APIView):
                 return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
         else:
-            return HttpResponseRedirect(redirect_to='/')
+            return HttpResponseRedirect(redirect_to="/")

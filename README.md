@@ -16,6 +16,19 @@ When running mentioned commands, you should have `.env` file, which contains def
 docker-compose down
 ```
 
+## Endpoints
+
+After running server following endpoints are available:
+* Registration- `/api/v1/accounts/register/`  
+    In order to register, send `POST` request, with following data:
+    ```json
+    {
+        "email": "example@mail.com",
+        "password": "password123",
+        "display_name": "example_name"
+    }
+    ```
+    Password minimal and maximal length are 8 and 22. Field `display_name` is optional, request does not have to contain it. Default value for `display_name` is empty string `""`, its maximal length is 32.
 ## Dependencies
 
 All project dependencies can be found in `/backend/requirements.txt` file. In order to install them in virtual enviroment use:

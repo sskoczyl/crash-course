@@ -8,39 +8,60 @@ User = get_user_model()
 
 class RegistrationTest(APITestCase):
     def test_create_user(self):
-        data = {"email": "foobar@example.com", "password": "somepassword1", "display_name": "foobar"}
-
+        data = {
+            "email": "foobar@example.com",
+            "password": "somepassword1",
+            "display_name": "foobar",
+        }
         response = self.client.post("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, {
-            "response": "Successfully registered",
-            "email": "foobar@example.com",
-            "display_name": "foobar"
-        })
+        self.assertEqual(
+            response.data,
+            {
+                "response": "Successfully registered",
+                "email": "foobar@example.com",
+                "display_name": "foobar",
+            },
+        )
 
     def test_create_user_no_display_name(self):
         data = {"email": "foobar@example.com", "password": "somepassword1"}
-
         response = self.client.post("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data, {
-            "response": "Successfully registered",
+        self.assertEqual(
+            response.data,
+            {
+                "response": "Successfully registered",
+                "email": "foobar@example.com",
+                "display_name": "",
+            },
+        )
+
+    def test_create_user_too_short_password(self):
+        data = {
             "email": "foobar@example.com",
-            "display_name": ""
-        })
-
-    def test_create_user_wrong_password(self):
-        data = {"email": "foobar@example.com", "password": "s12", "display_name": "foobar"}
-
+            "password": "s12",
+            "display_name": "foobar",
+        }
         response = self.client.post("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_create_user_too_long_password(self):
+        data = {
+            "email": "foobar@example.com",
+            "password": "passwd123456789010111213",
+            "display_name": "foobar",
+        }
+        response = self.client.post("/api/v1/accounts/register/", data, format="json")
+
+        self.assertEqual(User.objects.count(), 0)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_user_occupied_email(self):
         data = {"email": "foobar@example.com", "password": "somepassword1"}
@@ -53,12 +74,21 @@ class RegistrationTest(APITestCase):
         response = self.client.post("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(response.status_code,  status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_create_user_no_email(self):
+        data = {"email": "", "password": "somepassword1"}
+        response = self.client.post("/api/v1/accounts/register/", data, format="json")
+
+        self.assertEqual(User.objects.count(), 0)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_user_wrong_method(self):
-        data = {"email": "foobar@example.com", "password": "somepassword1", "display_name": "foobar"}
-
+        data = {
+            "email": "foobar@example.com",
+            "password": "somepassword1",
+            "display_name": "foobar",
+        }
         response = self.client.put("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 0)

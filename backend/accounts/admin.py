@@ -9,20 +9,39 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ('email', 'display_name', 'is_staff', 'is_active',)
-    list_filter = ('email', 'display_name', 'is_staff', 'is_active',)
+    list_display = (
+        "email",
+        "display_name",
+        "is_staff",
+        "is_active",
+    )
+    list_filter = (
+        "email",
+        "display_name",
+        "is_staff",
+        "is_active",
+    )
     fieldsets = (
-        (None, {'fields': ('email', 'display_name', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
+        (None, {"fields": ("email", "display_name", "password")}),
+        ("Permissions", {"fields": ("is_staff", "is_active")}),
     )
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'display_name', 'password', 'is_staff', 'is_active')}
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "display_name",
+                    "password",
+                    "is_staff",
+                    "is_active",
+                ),
+            },
         ),
     )
-    search_fields = ('email', 'display_name')
-    ordering = ('email', 'display_name')
+    search_fields = ("email", "display_name")
+    ordering = ("email", "display_name")
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
