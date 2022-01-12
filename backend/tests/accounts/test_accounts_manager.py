@@ -11,7 +11,7 @@ class UserManagerTests(TestCase):
         self.assertFalse(user.is_active)
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
-        self.assertEqual(user.display_name, "")
+        self.assertIsNone(user.display_name)
 
         with self.assertRaises(TypeError):
             User.objects.create_user()
@@ -30,4 +30,4 @@ class UserManagerTests(TestCase):
         self.assertTrue(admin_user.is_active)
         self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
-        self.assertEqual(admin_user.display_name, "")
+        self.assertIsNone(admin_user.display_name)

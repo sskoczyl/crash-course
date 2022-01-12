@@ -16,30 +16,14 @@ class RegistrationTest(APITestCase):
         response = self.client.post("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(
-            response.data,
-            {
-                "response": "Successfully registered",
-                "email": "foobar@example.com",
-                "display_name": "foobar",
-            },
-        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_create_user_no_display_name(self):
         data = {"email": "foobar@example.com", "password": "somepassword1"}
         response = self.client.post("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(
-            response.data,
-            {
-                "response": "Successfully registered",
-                "email": "foobar@example.com",
-                "display_name": "",
-            },
-        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_create_user_too_short_password(self):
         data = {
@@ -52,23 +36,12 @@ class RegistrationTest(APITestCase):
         self.assertEqual(User.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_create_user_too_long_password(self):
-        data = {
-            "email": "foobar@example.com",
-            "password": "passwd123456789010111213",
-            "display_name": "foobar",
-        }
-        response = self.client.post("/api/v1/accounts/register/", data, format="json")
-
-        self.assertEqual(User.objects.count(), 0)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
     def test_create_user_occupied_email(self):
         data = {"email": "foobar@example.com", "password": "somepassword1"}
         response = self.client.post("/api/v1/accounts/register/", data, format="json")
 
         self.assertEqual(User.objects.count(), 1)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         data = {"email": "foobar@example.com", "password": "somepassword1"}
         response = self.client.post("/api/v1/accounts/register/", data, format="json")

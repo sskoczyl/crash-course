@@ -13,7 +13,10 @@ class CustomUserManager(BaseUserManager):
         Create and save a User with the given email and password.
         """
         if not email:
-            raise ValueError(_("Users must have an email address"))
+            raise ValueError(_("User must have an email address"))
+
+        if not password:
+            raise ValueError(_("User must have a password"))
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
