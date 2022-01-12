@@ -19,7 +19,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        if self.display_name != "":
+        if self.display_name is not None:
             return self.display_name
         else:
             return str(self.email)
