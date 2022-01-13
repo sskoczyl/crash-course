@@ -1,5 +1,7 @@
+from rest_framework.serializers import ValidationError
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
+
+from django.db.utils import IntegrityError, DataError
 from django.core.validators import EmailValidator
 import django.contrib.auth.password_validation as validators
 
@@ -9,13 +11,10 @@ from .models import CustomUser
 class RegistrationSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(
-        required=True,
-        validators=[UniqueValidator(queryset=CustomUser.objects.all()), EmailValidator]
+        write_only=True, required=True, validators=[EmailValidator]
     )
-    password = serializers.CharField(
-        write_only=True,
-    )
-    display_name = serializers.CharField(required=False, max_length=30)
+    password = serializers.CharField(write_only=True)
+    display_name = serializers.CharField(required=False)
 
     class Meta:
         model = CustomUser
@@ -34,6 +33,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         password = self.validated_data["password"]
         account.set_password(password)
-        account.save()
+
+        try:
+            account.save()
+        except IntegrityError as error:
+            raise ValidationError(detail={"email": ["Email is in use"]})
+        except DataError as error:
+            raise ValidationError(
+                detail={"display_name": ["Display name can have max 30 characters"]}
+            )
 
         return account
