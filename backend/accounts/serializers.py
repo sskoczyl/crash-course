@@ -14,7 +14,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         write_only=True, required=True, validators=[EmailValidator]
     )
     password = serializers.CharField(write_only=True)
-    display_name = serializers.CharField(required=False)
+    display_name = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = CustomUser
