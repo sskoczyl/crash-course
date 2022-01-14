@@ -15,6 +15,11 @@ When running mentioned commands, you should have `.env` file, which contains def
 ```
 docker-compose down
 ```
+## Tests
+In order to run unit tests, after setting up docker containers, run command:
+```bash
+docker exec -it backend python manage.py test
+```
 
 ## Endpoints
 

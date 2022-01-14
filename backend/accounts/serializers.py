@@ -9,16 +9,14 @@ from .models import CustomUser
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-
-    email = serializers.EmailField(
-        write_only=True, required=True, validators=[EmailValidator]
-    )
-    password = serializers.CharField(write_only=True)
-    display_name = serializers.CharField(write_only=True, required=False)
-
     class Meta:
         model = CustomUser
         fields = ("email", "password", "display_name")
+        extra_kwargs = {
+            "email": {"required": True, "write_only": True},
+            "password": {"required": True, "write_only": True},
+            "display_name": {"required": False, "write_only": True},
+        }
 
     def validate_password(self, data):
         validators.validate_password(password=data, user=CustomUser)
@@ -34,13 +32,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         password = self.validated_data["password"]
         account.set_password(password)
 
-        try:
-            account.save()
-        except IntegrityError as error:
-            raise ValidationError(detail={"email": ["Email is in use"]})
-        except DataError as error:
-            raise ValidationError(
-                detail={"display_name": ["Display name can have max 30 characters"]}
-            )
+        account.save()
 
         return account

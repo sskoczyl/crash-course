@@ -9,7 +9,6 @@ class UserManagerTests(TestCase):
 
         self.assertEqual(user.email, "normal@user.com")
         self.assertFalse(user.is_active)
-        self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
         self.assertIsNone(user.display_name)
 
@@ -28,6 +27,5 @@ class UserManagerTests(TestCase):
 
         self.assertEqual(admin_user.email, "super@user.com")
         self.assertTrue(admin_user.is_active)
-        self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
         self.assertIsNone(admin_user.display_name)
