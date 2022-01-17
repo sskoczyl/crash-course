@@ -1,4 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
@@ -35,3 +36,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_active", True)
 
         return self.create_user(email, password, **extra_fields)
+
+
+class ActivationTokenManager(models.Manager):
+    pass

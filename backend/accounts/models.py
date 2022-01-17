@@ -1,9 +1,12 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .managers import CustomUserManager
+from django.utils.timezone import now
+
+import uuid
+
+from .managers import CustomUserManager, ActivationTokenManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -22,3 +25,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             return self.display_name
         else:
             return str(self.email)
+
+
+class ActivationToken(models.Model):
+    id = models.AutoField(primary_key=True)
+    value = models.CharField(max_length=100, unique=True, blank=False, null=False)
+    user_id= models.ForeignKey(CustomUser, blank=False, null=True, on_delete=models.SET_NULL)
+    date_created = models.DateField(default=now, unique=True, blank=False, null=False)
+
+    objects = ActivationTokenManager()
+
+    def get_token(self, user):
+
+        token = uuid.uuid1()
+
+        return token
