@@ -3,8 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from django.utils.timezone import now
-
-import uuid
+from datetime import timedelta
 
 from .managers import CustomUserManager, ActivationTokenManager
 
@@ -28,15 +27,29 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class ActivationToken(models.Model):
-    id = models.AutoField(primary_key=True)
-    value = models.CharField(max_length=100, unique=True, blank=False, null=False)
-    user_id= models.ForeignKey(CustomUser, blank=False, null=True, on_delete=models.SET_NULL)
-    date_created = models.DateField(default=now, unique=True, blank=False, null=False)
+    value = models.CharField(
+        primary_key=True, max_length=100, unique=True, blank=False, null=False
+    )
+    user = models.ForeignKey(
+        CustomUser, blank=False, null=True, on_delete=models.CASCADE
+    )
+    date_created = models.DateTimeField(
+        default=now, unique=False, blank=False, null=False
+    )
 
     objects = ActivationTokenManager()
 
-    def get_token(self, user):
+    def __str__(self):
+        return str(self.value)
 
-        token = uuid.uuid1()
+    def get_token_value(self):
+        return self.value
 
-        return token
+    def validate_token(self):
+        """
+        Returns TRUE if token is valid (was created less than 24h ago)
+        """
+        current_time = now()
+        max_diffrence = timedelta(hours=24)
+
+        return max_diffrence > current_time - self.date_created

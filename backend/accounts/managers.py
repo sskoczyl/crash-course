@@ -2,6 +2,8 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import uuid
+
 
 class CustomUserManager(BaseUserManager):
     """
@@ -39,4 +41,11 @@ class CustomUserManager(BaseUserManager):
 
 
 class ActivationTokenManager(models.Manager):
-    pass
+    def create_token(self, user):
+        if not user:
+            raise ValueError("Token user cannot be none")
+
+        token = self.model(value=uuid.uuid1(), user=user)
+        token.save()
+
+        return token

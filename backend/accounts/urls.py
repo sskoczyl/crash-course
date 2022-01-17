@@ -10,4 +10,9 @@ urlpatterns = [
         views.UserRegister.as_view({"post": "create"}),
         name="accounts_register",
     ),
+    path(
+        "activate/<slug:token>/",
+        views.UserAccountActivation.as_view(),
+        name="accounts_activate",
+    ),
 ]
