@@ -18,7 +18,7 @@ docker-compose down
 ## Tests
 In order to run unit tests, after setting up docker containers, run command:
 ```bash
-docker exec -it backend python manage.py test
+docker-compose exec backend python manage.py test
 ```
 
 ## Endpoints
