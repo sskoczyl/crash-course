@@ -52,3 +52,11 @@ class UserAccountActivation(APIView):
             token.delete()
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class HelloView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
