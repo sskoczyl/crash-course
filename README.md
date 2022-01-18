@@ -28,7 +28,6 @@ docker-compose exec backend python manage.py test
 ```
 
 ## Endpoints
-
 After running server following endpoints are available:
 * Registration- `/api/v1/accounts/register/`  
     In order to register, send `POST` request, with following data:

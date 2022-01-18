@@ -39,7 +39,6 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-
 class ActivationTokenManager(models.Manager):
     def create_token(self, user):
         if not user:

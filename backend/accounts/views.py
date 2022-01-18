@@ -8,7 +8,6 @@ from rest_framework import status
 from .serializers import RegistrationSerializer
 from .models import ActivationToken, CustomUser
 
-
 class UserRegister(CreateModelMixin, GenericViewSet):
     serializer_class = RegistrationSerializer
     activation_token_class = ActivationToken
@@ -52,7 +51,6 @@ class UserAccountActivation(APIView):
             token.delete()
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 class HelloView(APIView):
     permission_classes = [IsAuthenticated]
