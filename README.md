@@ -15,6 +15,12 @@ When running mentioned commands, you should have `.env` file, which contains def
 ```
 docker-compose down
 ```
+## Migrations
+When running the project fresh or after code updates (e.g. new model was added, switching to other branch) there may be need to apply migrations. In order to apply them, after running docker containers, execute following command:
+```bash
+docker-compose exec backend python manage.py migrate
+```
+
 ## Tests
 In order to run unit tests, after setting up docker containers, run command:
 ```bash
