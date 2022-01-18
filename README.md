@@ -42,6 +42,33 @@ After running server following endpoints are available:
 
 * Account activation- `/api/v1/accounts/activate/<slug:token>/`
     After succesful registration, to activate user send `POST` request with token value in url (in `<slug:token>` place). If token is valid (it exists and was created in last 24 hours) user is activated. In case if token does not exist or is invalid `400` response is returned.
+
+* Acces and refresh token- `/api/v1/accounts/token/`  
+    In order to obtain JWT acces and refresh tokens, after registration and account activation, send `POST` request with following data:
+    ```json
+    {
+        "email": "example@mail.com",
+        "password": "password123",
+    }
+    ```
+    If credentials are correct following `json` is returned:
+    ```json
+    {
+        "refresh": "some_value",
+        "access": "other_value",
+    }
+    ```
+    Refresh token is valid for 1 year, acces token for 30 min. In order to acces endpoints that require authorization you have to include `Authorization` key in request header with value: `Bearer <acces_token>`.  
+   
+
+* Refreshing acces token- `/api/v1/accounts/token/refresh/`  
+    In order to get new acces token send `POST` request with your refresh token:
+    ```json
+    {
+        "refresh": "some_value",
+    }
+    ```
+
 ## Dependencies
 
 All project dependencies can be found in `/backend/requirements.txt` file. In order to install them in virtual enviroment use:

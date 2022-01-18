@@ -27,5 +27,4 @@ urlpatterns = [
         jwt_views.TokenRefreshView.as_view(),
         name="accounts_jwt_refresh",
     ),
-    path('hello/', views.HelloView.as_view(), name='hello'),
 ]
