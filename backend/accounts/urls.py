@@ -11,7 +11,7 @@ urlpatterns = [
         name="accounts_register",
     ),
     path(
-        "activate/<slug:token>/",
+        "activate/",
         views.UserAccountActivation.as_view(),
         name="accounts_activate",
     ),

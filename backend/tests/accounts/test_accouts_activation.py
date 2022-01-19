@@ -1,11 +1,9 @@
-import email
+from accounts.models import ActivationToken
+from black import json
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-
 from rest_framework import status
 from rest_framework.test import APITransactionTestCase
-
-from accounts.models import ActivationToken
 
 User = get_user_model()
 
@@ -21,10 +19,10 @@ class AccountActivationTest(APITransactionTestCase):
         }
 
     def test_wrong_token(self):
-        activate_url = reverse(
-            "accounts:accounts_activate", kwargs={"token": "wrong-token"}
+        activate_url = reverse("accounts:accounts_activate")
+        response = self.client.post(
+            activate_url, data={"token": "wrong-token"}, format="json"
         )
-        response = self.client.post(activate_url)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_user_activation(self):
@@ -36,10 +34,10 @@ class AccountActivationTest(APITransactionTestCase):
         self.assertFalse(user.is_active)
         self.assertEqual(ActivationToken.objects.count(), 1)
 
-        activate_url = reverse(
-            "accounts:accounts_activate", kwargs={"token": str(token)}
+        activate_url = reverse("accounts:accounts_activate")
+        response = self.client.post(
+            activate_url, data={"token": str(token)}, format="json"
         )
-        response = self.client.post(activate_url)
 
         user.refresh_from_db()
 

@@ -1,9 +1,5 @@
-from rest_framework.serializers import ValidationError
-from rest_framework import serializers
-
-from django.db.utils import IntegrityError, DataError
-from django.core.validators import EmailValidator
 import django.contrib.auth.password_validation as validators
+from rest_framework import serializers
 
 from .models import CustomUser
 

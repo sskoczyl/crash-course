@@ -1,11 +1,11 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.utils.timezone import now
-
 from datetime import timedelta
 
-from .managers import CustomUserManager, ActivationTokenManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.db import models
+from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
+
+from .managers import ActivationTokenManager, CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -41,9 +41,6 @@ class ActivationToken(models.Model):
 
     def __str__(self):
         return str(self.value)
-
-    def get_token_value(self):
-        return self.value
 
     def validate_token(self):
         """
