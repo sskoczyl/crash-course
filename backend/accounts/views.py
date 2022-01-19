@@ -1,13 +1,14 @@
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import GenericViewSet
-from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.mixins import CreateModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt import views as jwt_views
+from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 
-from .serializers import RegistrationSerializer
 from .models import ActivationToken, CustomUser
+from .serializers import RegistrationSerializer
+
 
 class UserRegister(CreateModelMixin, GenericViewSet):
     serializer_class = RegistrationSerializer
@@ -20,9 +21,7 @@ class UserRegister(CreateModelMixin, GenericViewSet):
         user = serializer.save()
 
         activation_token = self.activation_token_class.objects.create_token(user=user)
-        print(
-            "[USER ACTIVATION TOKEN] ", activation_token.get_token_value()
-        )  # Temporary print
+        print("[USER ACTIVATION TOKEN] ", str(activation_token))  # Temporary print
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -32,11 +31,11 @@ class UserAccountActivation(APIView):
     user_class = CustomUser
     permission_classes = [~IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        token_url_value = kwargs.get("token")
+    def post(self, request):
+        token_value = request.data.get("token")
 
         try:
-            token = self.activation_token_class.objects.get(value=token_url_value)
+            token = self.activation_token_class.objects.get(value=token_value)
         except self.activation_token_class.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 

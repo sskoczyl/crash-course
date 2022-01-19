@@ -40,8 +40,14 @@ After running server following endpoints are available:
     ```
     Password minimal length is 8. Field `display_name` is optional, request does not have to contain it. Default value for `display_name` is `None`, its maximal length is 30.
 
-* Account activation- `/api/v1/accounts/activate/<slug:token>/`
-    After succesful registration, to activate user send `POST` request with token value in url (in `<slug:token>` place). If token is valid (it exists and was created in last 24 hours) user is activated. In case if token does not exist or is invalid `400` response is returned.
+* Account activation- `/api/v1/accounts/activate/`  
+    After succesful registration, to activate user send `POST` request with token value in body:
+    ```json
+    {
+        "token": "token_value"
+    }
+    ```
+    If token is valid (it exists and was created in last 24 hours) user is activated. In case if token does not exist or is invalid `400` response is returned.
 
 * Acces and refresh token- `/api/v1/accounts/token/`  
     In order to obtain JWT acces and refresh tokens, after registration and account activation, send `POST` request with following data:
@@ -68,7 +74,6 @@ After running server following endpoints are available:
         "refresh": "some_value",
     }
     ```
-
 ## Dependencies
 
 All project dependencies can be found in `/backend/requirements.txt` file. In order to install them in virtual enviroment use:
