@@ -1,4 +1,4 @@
-# Django drf
+# Django DRF
 ## Running project
 
 In order to run application, in root directory (where `docker-compose.yml` file is), use following commands:
